@@ -1,0 +1,355 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f7fb;
+  --foreground: #122033;
+  --glass-bg: rgba(255, 255, 255, 0.64);
+  --glass-border: rgba(161, 176, 196, 0.26);
+  --glass-shadow: 0 24px 70px rgba(15, 23, 42, 0.1);
+  --accent: #7d9ab8;
+  --accent-strong: #5d7f9f;
+  --pointer-x: 50vw;
+  --pointer-y: 30vh;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #f4f7fb;
+    --foreground: #122033;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at top left, rgba(125, 154, 184, 0.14), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(114, 142, 172, 0.12), transparent 22%),
+    radial-gradient(circle at bottom right, rgba(197, 208, 220, 0.2), transparent 24%),
+    linear-gradient(180deg, #fbfcfe 0%, #f1f5fa 50%, #e8eef5 100%);
+  color: var(--foreground);
+  font-family: "SF Pro Display", "SF Pro Text", Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  overflow-x: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  pointer-events: none;
+  z-index: -2;
+}
+
+body::before {
+  background:
+    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255, 255, 255, 0.22), transparent 18%),
+    conic-gradient(
+      from 220deg at 50% 50%,
+      rgba(125, 154, 184, 0.18),
+      rgba(177, 193, 208, 0.16),
+      rgba(214, 223, 232, 0.18),
+      rgba(109, 135, 160, 0.16),
+      rgba(125, 154, 184, 0.18)
+    );
+  filter: blur(50px) saturate(110%);
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+  animation: auroraSpin 28s linear infinite;
+}
+
+body::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23n)' opacity='0.38'/%3E%3C/svg%3E");
+  background-size: 280px 280px;
+  mix-blend-mode: soft-light;
+  opacity: 0.1;
+  filter: contrast(105%) brightness(108%);
+  pointer-events: none;
+}
+
+::selection {
+  background: rgba(125, 154, 184, 0.28);
+  color: #0f172a;
+}
+
+@keyframes floatBlob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(18px, 24px, 0) scale(1.08);
+  }
+}
+
+@keyframes auroraSpin {
+  0% {
+    transform: rotate(0deg) scale(1.02);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.02);
+  }
+}
+
+.glass-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(243, 247, 252, 0.82)) padding-box,
+    conic-gradient(
+      from 220deg,
+      rgba(125, 154, 184, 0.34),
+      rgba(164, 181, 197, 0.3),
+      rgba(209, 217, 226, 0.26),
+      rgba(109, 135, 160, 0.3),
+      rgba(125, 154, 184, 0.34)
+    ) border-box;
+  backdrop-filter: blur(26px) saturate(125%);
+  -webkit-backdrop-filter: blur(26px) saturate(125%);
+  box-shadow:
+    0 24px 80px rgba(15, 23, 42, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.7) inset,
+    0 0 36px rgba(125, 154, 184, 0.12);
+  transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+
+.glass-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255, 255, 255, 0.55), transparent 18%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.18) 36%, rgba(255, 255, 255, 0.36) 68%, rgba(255, 255, 255, 0.1));
+  pointer-events: none;
+}
+
+.glass-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 0%, rgba(125, 154, 184, 0.12) 18%, transparent 36%, transparent 62%, rgba(125, 154, 184, 0.08) 82%, transparent 100%);
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.glass-shell:hover,
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 30px 90px rgba(15, 23, 42, 0.14),
+    0 0 0 1px rgba(255, 255, 255, 0.74) inset,
+    0 0 44px rgba(125, 154, 184, 0.16);
+}
+
+.glass-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(243, 247, 252, 0.72)) padding-box,
+    conic-gradient(
+      from 220deg,
+      rgba(125, 154, 184, 0.26),
+      rgba(164, 181, 197, 0.24),
+      rgba(209, 217, 226, 0.22),
+      rgba(109, 135, 160, 0.24),
+      rgba(125, 154, 184, 0.26)
+    ) border-box;
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  box-shadow:
+    0 18px 50px rgba(15, 23, 42, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.65) inset,
+    0 0 28px rgba(125, 154, 184, 0.08);
+  transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+
+.glass-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255, 255, 255, 0.4), transparent 20%),
+    linear-gradient(120deg, rgba(125, 154, 184, 0.14), transparent 35%, rgba(164, 181, 197, 0.08));
+  pointer-events: none;
+}
+
+.glass-input,
+.glass-select,
+.glass-textarea {
+  width: 100%;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(246, 249, 252, 0.92)) padding-box,
+    conic-gradient(
+      from 220deg,
+      rgba(125, 154, 184, 0.22),
+      rgba(164, 181, 197, 0.2),
+      rgba(209, 217, 226, 0.18),
+      rgba(109, 135, 160, 0.2),
+      rgba(125, 154, 184, 0.22)
+    ) border-box;
+  color: #122033;
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 0 0 1px rgba(125, 154, 184, 0.08) inset,
+    0 0 20px rgba(125, 154, 184, 0.06);
+  outline: none;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.glass-input::placeholder,
+.glass-textarea::placeholder {
+  color: rgba(93, 115, 137, 0.72);
+}
+
+.glass-input:focus,
+.glass-select:focus,
+.glass-textarea:focus {
+  border-color: transparent;
+  box-shadow:
+    0 0 0 4px rgba(125, 154, 184, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+    0 0 22px rgba(125, 154, 184, 0.08);
+  transform: translateY(-1px);
+}
+
+.glass-button {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(135deg, rgba(109, 135, 160, 0.95), rgba(125, 154, 184, 0.9)) padding-box,
+    conic-gradient(from 220deg, rgba(125, 154, 184, 0.5), rgba(164, 181, 197, 0.46), rgba(209, 217, 226, 0.42), rgba(125, 154, 184, 0.5)) border-box;
+  color: white;
+  box-shadow:
+    0 12px 30px rgba(109, 135, 160, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+    0 0 22px rgba(125, 154, 184, 0.1);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+.glass-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.65), transparent 38%, transparent 62%, rgba(255, 255, 255, 0.28));
+  opacity: 0.35;
+}
+
+.glass-button:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 18px 34px rgba(125, 154, 184, 0.24);
+}
+
+.glass-button-secondary {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(245, 248, 252, 0.78)) padding-box,
+    conic-gradient(from 220deg, rgba(125, 154, 184, 0.28), rgba(164, 181, 197, 0.24), rgba(209, 217, 226, 0.2), rgba(125, 154, 184, 0.28)) border-box;
+  color: #122033;
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+    0 0 20px rgba(125, 154, 184, 0.06);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.glass-button-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.74) inset,
+    0 0 24px rgba(125, 154, 184, 0.08);
+}
+
+.glass-nav-tab {
+  position: relative;
+  color: rgba(18, 32, 51, 0.7);
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.glass-nav-tab[data-active="true"] {
+  color: #122033;
+  text-shadow: 0 0 18px rgba(125, 154, 184, 0.2);
+}
+
+.glass-nav-tab::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.3rem;
+  width: 0;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(125, 154, 184, 0), rgba(125, 154, 184, 1), rgba(164, 181, 197, 0));
+  transform: translateX(-50%);
+  transition: width 160ms ease;
+}
+
+.glass-nav-tab[data-active="true"]::after {
+  width: 65%;
+}
+
+.glass-modal-backdrop {
+  background: rgba(15, 23, 42, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.glass-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(125, 154, 184, 0.16);
+  background: rgba(255, 255, 255, 0.65);
+  color: #4d667f;
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+}
+
+.glass-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.glass-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(125, 154, 184, 0.5), rgba(164, 181, 197, 0.44));
+  border: 2px solid rgba(241, 245, 249, 0.95);
+}
+
+.glass-scrollbar::-webkit-scrollbar-track {
+  background: rgba(125, 154, 184, 0.06);
+}
+
+.glass-shell,
+.glass-card,
+.glass-input,
+.glass-select,
+.glass-textarea,
+.glass-button,
+.glass-button-secondary {
+  will-change: transform, box-shadow, filter;
+}
